@@ -38,15 +38,12 @@ public class Monitor {
 	
 	
 	private double getDiscUsage(){
-	   
-		FileSystemView fsv = FileSystemView.getFileSystemView();
-        File[] f = File.listRoots();
         int noOfPartitions = 0;
         double usage = 0.0;
-        for (int i = 0; i < f.length; i++) {
-        	if(fsv.isDrive(f[i]) && f[i].canRead() &&  f[i].canWrite()){ //if is HDD
+        for (File drive : File.listRoots()) {
+        	if(FileSystemView.getFileSystemView().isDrive(drive) && drive.canRead() && drive.canWrite()){ //if is HDD
         		++noOfPartitions;
-        		usage += (f[i].getTotalSpace() - f[i].getUsableSpace())/(double)f[i].getTotalSpace();
+        		usage += (drive.getTotalSpace() - drive.getUsableSpace())/(double)drive.getTotalSpace(); //average usage per drive
         	}
         }
         return noOfPartitions == 0 ? 1.0 : usage/noOfPartitions;

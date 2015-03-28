@@ -3,6 +3,7 @@ package io.github.monitool.sensors;
 import io.github.monitool.sensors.jsonModels.HostName;
 import io.github.monitool.sensors.jsonModels.RegistrationJson;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -15,20 +16,49 @@ public class SensorConfiguration {
 
 	private String serverAddres;
 	private String sensorId;
+	private String sendingCronExp;
 	private PropertiesConfiguration config;
 
 	private SensorConfiguration() {
 		config = null;
+		ensureConfigFileExisting();
 		try {
 			config = new PropertiesConfiguration("application.properties");
 			serverAddres = config.getString("server.ip", null);
+			if (serverAddres == null) {
+				serverAddres = "http://monitool.herokuapp.com/";
+				updateConfig("server.ip", serverAddres);
+			}
+			sendingCronExp = config.getString("sensor.cron.exp", null);
+			if (sendingCronExp == null) {
+				sendingCronExp = "0/1 * * * * ?";
+				updateConfig("sensor.cron.exp", sendingCronExp);
+			}
 			sensorId = config.getString("sensor.id", null);
 			if (sensorId == null) {
 				registerSensor();
 			}
 
 		} catch (ConfigurationException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void ensureConfigFileExisting() {
+		try {
+			new File("application.properties").createNewFile();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	void updateConfig(String key, String value) {
+
+		try {
+			config.setProperty(key, value);
+			config.save();
+		} catch (ConfigurationException e) {
 			e.printStackTrace();
 		}
 	}
@@ -50,7 +80,6 @@ public class SensorConfiguration {
 
 			sensorId = regJson.getId();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return sensorId;
@@ -64,7 +93,6 @@ public class SensorConfiguration {
 					+ System.getProperty("user.name");
 
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return name;
@@ -83,15 +111,13 @@ public class SensorConfiguration {
 		return sensorId;
 	}
 
+	public String getSendingCronExp() {
+		return sendingCronExp;
+	}
+
 	public void registerSensor() {
-		try {
-			sensorId = registerSensor(serverAddres);
-			if (sensorId != null && !sensorId.isEmpty())
-				config.setProperty("sensor.id", sensorId);
-			config.save();
-		} catch (ConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		sensorId = registerSensor(serverAddres);
+		if (sensorId != null && !sensorId.isEmpty())
+			updateConfig("sensor.id", sensorId);
 	}
 }

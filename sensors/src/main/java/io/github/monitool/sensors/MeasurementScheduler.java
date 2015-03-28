@@ -24,7 +24,6 @@ public class MeasurementScheduler {
 			scheduler.start();
 			scheduler.scheduleJob(job, trigger);
 		} catch (SchedulerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

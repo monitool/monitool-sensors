@@ -24,14 +24,14 @@ public class MeasurementSender {
 	synchronized void sendMeasurement(Measure measure) {
 		try {
 			measure.setSensorId(SensorConfiguration.getInstance().getSensorId());
-			System.out.println(measure.toJson());
 			Response response = clientHttp.post(SensorConfiguration
 					.getInstance().getServerAddress() + "api/data",
 					measure.toJson());
 			if (!response.isSuccessful()) {
 				SensorConfiguration.getInstance().registerSensor();
+				clientHttp.post(SensorConfiguration.getInstance()
+						.getServerAddress() + "api/data", measure.toJson());
 			}
-			System.out.println(response);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

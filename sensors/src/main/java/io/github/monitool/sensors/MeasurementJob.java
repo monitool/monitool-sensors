@@ -10,7 +10,8 @@ public class MeasurementJob implements Job {
 			throws JobExecutionException {
 		System.out.println(System.currentTimeMillis() / 1000);
 		System.out.println("Hello Quartz!");
-
+		Monitor monitor = new Monitor();
+		monitor.getMesure();
 	}
 
 }

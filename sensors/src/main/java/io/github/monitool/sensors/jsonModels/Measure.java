@@ -5,6 +5,15 @@ public class Measure extends JsonParsable {
 	private String sensorId;
 	private double cpuLoad;
 	private double memLoad;
+	private double discLoad;
+
+	public double getDiscLoad() {
+		return discLoad;
+	}
+
+	public void setDiscLoad(double discLoad) {
+		this.discLoad = discLoad;
+	}
 
 	public String getSensorId() {
 		return sensorId;

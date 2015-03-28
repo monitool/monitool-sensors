@@ -1,5 +1,7 @@
 package io.github.monitool.sensors;
 
+import io.github.monitool.sensors.jsonModels.Measure;
+
 import java.lang.management.ManagementFactory;
 
 import com.sun.management.OperatingSystemMXBean;

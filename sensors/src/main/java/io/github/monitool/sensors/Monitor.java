@@ -24,8 +24,8 @@ public class Monitor {
 	}
 	
 	private double getMemoryUsage() {		
-		double free = mxBean.getFreePhysicalMemorySize();
-		double total = mxBean.getTotalPhysicalMemorySize();
+		double free = mxBean.getFreePhysicalMemorySize() / 1024;
+		double total = mxBean.getTotalPhysicalMemorySize() / 1024;
 		double usage = (total - free) / total;
 		return usage;
 	}

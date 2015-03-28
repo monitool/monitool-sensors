@@ -1,5 +1,7 @@
 package io.github.monitool.sensors;
 
+import io.github.monitool.sensors.jsonModels.Measure;
+
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

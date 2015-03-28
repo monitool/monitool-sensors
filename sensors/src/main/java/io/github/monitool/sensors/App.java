@@ -11,9 +11,10 @@ import java.io.IOException;
 public class App {
 
 	public static void main(String[] args) {
-		MeasurementScheduler.startMeasurements("0/5 * * * * ?");
+		MeasurementScheduler.startMeasurements("0/1 * * * * ?");
 		ClientHttp client = new ClientHttp();
 		try {
+
 			System.out.println(client.get("http://unirest.io/java.html"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

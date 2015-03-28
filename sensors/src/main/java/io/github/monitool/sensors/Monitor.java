@@ -14,8 +14,8 @@ public class Monitor {
 	
 	public Measure getMesure() {
 		Measure measure = new Measure();
-		measure.setCpu(getCpuUsage());
-		measure.setMemory(getMemoryUsage());
+		measure.setCpuLoad(getCpuUsage());
+		measure.setMemLoad(getMemoryUsage());
 		return measure;
 	}
 	
@@ -24,6 +24,9 @@ public class Monitor {
 	}
 	
 	private double getMemoryUsage() {		
-		return mxBean.getFreePhysicalMemorySize() / mxBean.getTotalPhysicalMemorySize();
+		double free = mxBean.getFreePhysicalMemorySize();
+		double total = mxBean.getTotalPhysicalMemorySize();
+		double usage = (total - free) / total;
+		return usage;
 	}
 }

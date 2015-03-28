@@ -32,6 +32,7 @@ public class MeasurementSender {
 				clientHttp.post(SensorConfiguration.getInstance()
 						.getServerAddress() + "api/data", measure.toJson());
 			}
+			System.out.println("Measurement sent!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

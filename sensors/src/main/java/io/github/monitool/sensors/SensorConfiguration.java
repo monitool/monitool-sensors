@@ -20,6 +20,7 @@ public class SensorConfiguration {
 	private PropertiesConfiguration config;
 
 	private SensorConfiguration() {
+
 		config = null;
 		ensureConfigFileExisting();
 		try {
@@ -42,6 +43,10 @@ public class SensorConfiguration {
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
 		}
+
+		System.out.println("Sensor started:");
+		System.out.println("name: " + createName());
+		System.out.println("id: " + sensorId);
 	}
 
 	private static void ensureConfigFileExisting() {
@@ -82,6 +87,7 @@ public class SensorConfiguration {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Registered sensor: " + sensorId);
 		return sensorId;
 	}
 

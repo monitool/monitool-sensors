@@ -26,6 +26,8 @@ public class SensorConfiguration {
 		try {
 			config = new PropertiesConfiguration("application.properties");
 			serverAddres = config.getString("server.ip", null);
+			if (!serverAddres.endsWith("/"))
+				serverAddres += "/";
 			if (serverAddres == null) {
 				serverAddres = "http://monitool.herokuapp.com/";
 				updateConfig("server.ip", serverAddres);

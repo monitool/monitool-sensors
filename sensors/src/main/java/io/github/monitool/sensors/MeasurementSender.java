@@ -4,6 +4,8 @@ import io.github.monitool.sensors.jsonModels.Measure;
 
 import java.io.IOException;
 
+import com.squareup.okhttp.Response;
+
 public class MeasurementSender {
 	static MeasurementSender instance = null;
 
@@ -19,13 +21,16 @@ public class MeasurementSender {
 		clientHttp = new ClientHttp();
 	}
 
-	void sendMeasurement(Measure measure) {
+	synchronized void sendMeasurement(Measure measure) {
 		try {
-			measure.setSensorId(SensorConfiguration.getSensorId());
+			measure.setSensorId(SensorConfiguration.getInstance().getSensorId());
 			System.out.println(measure.toJson());
-			String response = clientHttp.post(
-					SensorConfiguration.getServerAddress() + "api/data",
+			Response response = clientHttp.post(SensorConfiguration
+					.getInstance().getServerAddress() + "api/data",
 					measure.toJson());
+			if (!response.isSuccessful()) {
+				SensorConfiguration.getInstance().registerSensor();
+			}
 			System.out.println(response);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

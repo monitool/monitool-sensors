@@ -15,18 +15,16 @@ public class SensorConfiguration {
 
 	private String serverAddres;
 	private String sensorId;
+	private PropertiesConfiguration config;
 
 	private SensorConfiguration() {
-		PropertiesConfiguration config = null;
+		config = null;
 		try {
 			config = new PropertiesConfiguration("application.properties");
 			serverAddres = config.getString("server.ip", null);
 			sensorId = config.getString("sensor.id", null);
 			if (sensorId == null) {
-				sensorId = registerSensor(serverAddres);
-				if (sensorId != null && !sensorId.isEmpty())
-					config.setProperty("sensor.id", sensorId);
-				config.save();
+				registerSensor();
 			}
 
 		} catch (ConfigurationException e) {
@@ -35,13 +33,19 @@ public class SensorConfiguration {
 		}
 	}
 
-	public static String registerSensor(String serverAddress) {
+	synchronized public static void start() {
+		if (configuration == null)
+			configuration = new SensorConfiguration();
+	}
+
+	synchronized public static String registerSensor(String serverAddress) {
 		ClientHttp clientHttp = new ClientHttp();
 		HostName name = new HostName(createName());
 		String sensorId = null;
 		try {
-			String response = clientHttp.post(serverAddress + "api/sensors",
-					name.toJson());
+			String response = clientHttp
+					.post(serverAddress + "api/sensors", name.toJson()).body()
+					.string();
 			RegistrationJson regJson = RegistrationJson.fromJson(response);
 
 			sensorId = regJson.getId();
@@ -67,17 +71,28 @@ public class SensorConfiguration {
 		return name;
 	}
 
-	static SensorConfiguration getInstance() {
-		if (configuration == null)
-			configuration = new SensorConfiguration();
+	synchronized static SensorConfiguration getInstance() {
+
 		return configuration;
 	}
 
-	static public String getServerAddress() {
-		return getInstance().serverAddres;
+	public String getServerAddress() {
+		return serverAddres;
 	}
 
-	static public String getSensorId() {
-		return getInstance().sensorId;
+	public String getSensorId() {
+		return sensorId;
+	}
+
+	public void registerSensor() {
+		try {
+			sensorId = registerSensor(serverAddres);
+			if (sensorId != null && !sensorId.isEmpty())
+				config.setProperty("sensor.id", sensorId);
+			config.save();
+		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

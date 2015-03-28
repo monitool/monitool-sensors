@@ -16,10 +16,7 @@ public class MeasurementJob implements Job {
 
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
-		System.out.println(System.currentTimeMillis() / 1000);
-		System.out.println("Hello Quartz!");
 		Measure measure = monitor.getMesure();
-		System.out.println(measure.toString());
 		MeasurementSender.getInstance().sendMeasurement(measure);
 
 	}

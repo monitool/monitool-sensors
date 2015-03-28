@@ -33,7 +33,6 @@ public class MeasurementSender {
 						.getServerAddress() + "api/data", measure.toJson());
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

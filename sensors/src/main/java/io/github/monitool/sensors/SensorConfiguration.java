@@ -49,7 +49,6 @@ public class SensorConfiguration {
 			RegistrationJson regJson = RegistrationJson.fromJson(response);
 
 			sensorId = regJson.getId();
-			System.out.println(sensorId);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

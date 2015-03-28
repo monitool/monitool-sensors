@@ -20,7 +20,6 @@ public class ClientHttp {
 	}
 
 	public Response post(String url, String json) throws IOException {
-		System.out.println(url);
 		RequestBody body = RequestBody.create(JSON, json);
 		Request request = new Request.Builder().url(url).post(body).build();
 		Response response = client.newCall(request).execute();

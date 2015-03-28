@@ -1,6 +1,7 @@
 package io.github.monitool.sensors;
 
 import io.github.monitool.sensors.jsonModels.HostName;
+import io.github.monitool.sensors.jsonModels.RegistrationJson;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -8,7 +9,6 @@ import java.net.UnknownHostException;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.json.JSONObject;
 
 public class SensorConfiguration {
 	private static SensorConfiguration configuration;
@@ -24,7 +24,8 @@ public class SensorConfiguration {
 			sensorId = config.getString("sensor.id", null);
 			if (sensorId == null) {
 				sensorId = registerSensor(serverAddres);
-				config.setProperty("sensor.id", sensorId);
+				if (sensorId != null && !sensorId.isEmpty())
+					config.setProperty("sensor.id", sensorId);
 				config.save();
 			}
 
@@ -41,9 +42,10 @@ public class SensorConfiguration {
 		try {
 			String response = clientHttp.post(serverAddress + "api/sensors",
 					name.toJson());
-			System.out.println(response);
-			JSONObject obj = new JSONObject(response);
-			sensorId = obj.getString("id");
+			RegistrationJson regJson = RegistrationJson.fromJson(response);
+
+			sensorId = regJson.getId();
+			System.out.println(sensorId);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

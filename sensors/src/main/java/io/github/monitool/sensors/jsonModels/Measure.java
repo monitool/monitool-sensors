@@ -42,6 +42,6 @@ public class Measure extends JsonParsable {
 	@Override
 	public String toString() {
 		return "CPU load: " + cpuLoad * 100 + "%\n" + "Memory usage: "
-				+ memLoad * 100 + "%\n";
+				+ memLoad * 100 + "%\n" + "Disc usage: " + discLoad * 100 + "%\n";
 	}
 }

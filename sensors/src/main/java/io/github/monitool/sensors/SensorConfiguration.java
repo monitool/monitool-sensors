@@ -29,8 +29,7 @@ public class SensorConfiguration {
 			if (serverAddres == null) {
 				serverAddres = "http://monitool.herokuapp.com/";
 				updateConfig("server.ip", serverAddres);
-			}
-			else if (!serverAddres.endsWith("/")) {
+			} else if (!serverAddres.endsWith("/")) {
 				serverAddres += "/";
 			}
 			sendingCronExp = config.getString("sensor.cron.exp", null);
@@ -82,7 +81,7 @@ public class SensorConfiguration {
 		String sensorId = null;
 		try {
 			String response = clientHttp
-					.post(serverAddress + "api/sensors", name.toJson()).body()
+					.post(serverAddress + "api/hosts", name.toJson()).body()
 					.string();
 			RegistrationJson regJson = RegistrationJson.fromJson(response);
 

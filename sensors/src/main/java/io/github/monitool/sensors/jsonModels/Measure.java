@@ -2,7 +2,6 @@ package io.github.monitool.sensors.jsonModels;
 
 public class Measure extends JsonParsable {
 
-	private String sensorId;
 	private double cpuLoad;
 	private double memLoad;
 	private double discLoad;
@@ -13,14 +12,6 @@ public class Measure extends JsonParsable {
 
 	public void setDiscLoad(double discLoad) {
 		this.discLoad = discLoad;
-	}
-
-	public String getSensorId() {
-		return sensorId;
-	}
-
-	public void setSensorId(String sensorId) {
-		this.sensorId = sensorId;
 	}
 
 	public double getCpuLoad() {
@@ -42,6 +33,7 @@ public class Measure extends JsonParsable {
 	@Override
 	public String toString() {
 		return "CPU load: " + cpuLoad * 100 + "%\n" + "Memory usage: "
-				+ memLoad * 100 + "%\n" + "Disc usage: " + discLoad * 100 + "%\n";
+				+ memLoad * 100 + "%\n" + "Disc usage: " + discLoad * 100
+				+ "%\n";
 	}
 }

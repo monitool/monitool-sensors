@@ -23,16 +23,16 @@ public class MeasurementSender {
 
 	synchronized void sendMeasurement(Measure measure) {
 		try {
-			measure.setSensorId(SensorConfiguration.getInstance().getSensorId());
-			Response response = clientHttp.post(SensorConfiguration
-					.getInstance().getServerAddress() + "api/data",
-					measure.toJson());
+			String url = SensorConfiguration.getInstance().getServerAddress()
+					+ "api/hosts/"
+					+ SensorConfiguration.getInstance().getSensorId()
+					+ "/data/";
+			String msgBody = "{\"instance\":" + measure.toJson() + "}";
+			Response response = clientHttp.post(url, msgBody);
 			if (!response.isSuccessful()) {
 				SensorConfiguration.getInstance().registerSensor();
-				clientHttp.post(SensorConfiguration.getInstance()
-						.getServerAddress() + "api/data", measure.toJson());
+				clientHttp.post(url, msgBody);
 			}
-			System.out.println(measure.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
